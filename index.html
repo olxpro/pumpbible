@@ -5,15 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mystic Crypto Predictor</title>
   
-  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   
-  <!-- Custom CSS and Tailwind Configuration -->
   <style>
     body { font-family: 'Arial', sans-serif; }
     @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -21,9 +17,9 @@
     @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
     .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
     @keyframes text-glitch {
-      0% { text-shadow: -1px -1px 0 #f00, 1px 1px 0 #0ff; } 25% { text-shadow: 1px 1px 0 #f00, -1px -1px 0 #0ff; }
-      50% { text-shadow: 1px -1px 0 #f00, -1px 1px 0 #0ff; } 75% { text-shadow: -1px 1px 0 #f00, 1px -1px 0 #0ff; }
-      100% { text-shadow: -1px -1px 0 #f00, 1px 1px 0 #0ff; }
+      0%{text-shadow:-1px -1px 0 #f00,1px 1px 0 #0ff}25%{text-shadow:1px 1px 0 #f00,-1px -1px 0 #0ff}
+      50%{text-shadow:1px -1px 0 #f00,-1px 1px 0 #0ff}75%{text-shadow:-1px 1px 0 #f00,1px -1px 0 #0ff}
+      100%{text-shadow:-1px -1px 0 #f00,1px 1px 0 #0ff}
     }
     .error-text-glitch { animation: text-glitch 150ms linear infinite; }
     #predictButton:active { transform: translateY(-0.5%) scale(0.98); }
@@ -34,6 +30,14 @@
     .hud-container:hover::before, .hud-container:hover::after { border-color: rgba(6, 182, 212, 0.8); transform: scale(1.05); }
     .hud-container::before { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
     .hud-container::after { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+    
+    /* --- FIX HERE: More robust styling for the response container --- */
+    .oracle-response-content {
+      padding-top: 0.25rem;
+      white-space: pre-wrap; /* Respects newlines and wraps text */
+      overflow-wrap: break-word; /* Standard property for breaking long words */
+      word-break: break-all; /* More aggressive fallback to break any word */
+    }
     .oracle-response-content * {
         color: inherit !important; background: transparent !important; font-family: inherit !important;
         font-size: inherit !important; line-height: inherit !important;
@@ -67,7 +71,6 @@
 </head>
 
 <body class="bg-neutral-950">
-
   <div id="app-container" class="relative min-h-screen bg-neutral-950 text-gray-200 flex flex-col items-center justify-center overflow-hidden antialiased p-4 sm:p-6 md:p-8">
     
     <div class="absolute inset-0 opacity-20 animate-smoke-drift-1" style="background-image: radial-gradient(ellipse at 20% 80%, rgba(55, 65, 81, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(75, 85, 99, 0.4) 0%, transparent 50%);"></div>
@@ -76,7 +79,6 @@
 
     <div class="relative z-10 animate-gentle-bob flex flex-col items-center w-full">
       <img id="mysticIcon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJteXN0aWNfaWNvbl9ncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDYsMTgyLDIxMik7c3RvcC1vcGFjaXR5OjEiIC8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMTY3LDI0MywyMDgpO3N0b3Atb3BhY2l0eTowLjgiIC8+PC9saW5lYXJHcmFkaWVudD48ZmlsdGVyIGlkPSJteXN0aWNfaWNvbl9nbG93Ij48ZmVHYXVzc2lhbkJsdXIgc3RhbmRhcmREZXZpYXRpb249IjMiIHJlc3VsdD0iY29sb3JlZEJsdXIiLz48ZmVOZXJnZT48ZmVNZXJnZU5vZGUgaW49ImNvbG9yZWRCbHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPjwvZmlsdGVyPjwvZGVmcz48cGF0aCBkPSJNNTAgMTIgQyAyNSAyNSwgMjAgNjAsIDUwIDg4IEMgODAgNjAsIDc1IDI1LCA1MCAxMiBaIE01MCAzMCBDIDM1IDQwLCAzNSA2MCwgNTAgNzAgQyA2NSA2MCwgNjUgNDAsIDUwIDMwIFoiIGZpbGw9InVybCgjbXlzdGljX2ljb25fZ3JhZDEpIiBmaWx0ZXI9InVybCgjbXlzdGljX2ljb25fZ2xvdykiIHN0cm9rZT0icmdiYSgyMDksMjUwLDIyOSwwLjUpIiBzdHJva2Utd2lkdGg9IjEiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI3IiBmaWxsPSJyZ2IoMjA5LDI1MCwyMjkpIi8+PHBhdGggZD0iTTUwIDIwIEMgMzAgMzUsIDMwIDY1LCA1MCA4MCBDIDcwIDY1LCA3MCAzNSwgNTAgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDYsMTgyLDIxMiwwLjcpIiBzdHJva2Utd2lkdGg9IjEuNSIvPjwvc3ZnPg==" alt="Mystic Oracle Icon" class="mb-6 md:mb-8 h-24 w-24 md:h-28 md:w-28 opacity-90 [filter:drop-shadow(0_0_0.5rem_#22d3ee)]" />
-
       <div id="formContainer" class="group p-8 md:p-12 bg-neutral-900/70 backdrop-blur-md rounded-xl shadow-2xl shadow-neutral-950/50 border border-neutral-700/50 transition-all duration-500 hover:shadow-neutral-800/60 w-full max-w-7xl relative hud-container">
         <div class="flex flex-col items-center gap-6 md:gap-8 w-full">
           <div class="flex flex-col sm:flex-row items-end gap-4 md:gap-6 w-full">
@@ -98,10 +100,7 @@
         </div>
       </div>
     </div>
-    
-    <footer id="footer" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-neutral-600 text-xs font-share-tech-mono z-20">
-      Crypto Oracle v0.1 // System Online
-    </footer>
+    <footer id="footer" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-neutral-600 text-xs font-share-tech-mono z-20">Crypto Oracle v0.1 // System Online</footer>
   </div>
 
   <script>
@@ -140,10 +139,10 @@
           <div class="mt-6 p-4 border border-red-500/50 rounded-md bg-red-900/20 text-red-300 font-share-tech-mono text-sm w-full text-left animate-fadeIn" role="alert">
             <h3 class="font-cinzel text-red-400 [filter:drop-shadow(0_0_0.2rem_#ef4444)] mb-2 text-base error-text-glitch">Connection Disrupted:</h3>
             <p>${errorMessage}</p>
-          </div>
-        `;
+          </div>`;
       };
 
+      // --- FIX HERE: Removed the typewriter and simplified the function ---
       const displayResult = (htmlContent) => {
         resultContainer.innerHTML = `
           <div class="relative mt-6 p-4 border border-cyan-700/50 rounded-md bg-cyan-900/20 text-cyan-200 font-share-tech-mono text-sm w-full text-left animate-fadeIn" role="alert" aria-live="assertive">
@@ -151,29 +150,18 @@
             <button id="copyBtn" title="Copy to clipboard" class="absolute top-3 right-3 p-1 text-cyan-500 hover:text-cyan-200 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
             </button>
-            <!-- FIX HERE: Added 'break-words' class to prevent overflow -->
-            <div class="whitespace-pre-wrap oracle-response-content pt-1 break-words" id="prediction-text-area"></div>
+            <div class="oracle-response-content" id="prediction-text-area"></div>
           </div>
         `;
         
         const textArea = document.getElementById('prediction-text-area');
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlContent;
-        const textToType = tempDiv.innerText || tempDiv.textContent;
-
-        let i = 0;
-        function typeWriter() {
-          if (i < textToType.length) {
-            textArea.innerHTML += textToType.charAt(i);
-            i++;
-            setTimeout(typeWriter, 25);
-          }
-        }
-        typeWriter();
+        // Directly inject the HTML from the webhook
+        textArea.innerHTML = htmlContent;
 
         const copyBtn = document.getElementById('copyBtn');
         copyBtn.addEventListener('click', () => {
-          navigator.clipboard.writeText(textToType).then(() => {
+          // Copy the text content, not the HTML tags
+          navigator.clipboard.writeText(textArea.innerText).then(() => {
             copyBtn.title = "Copied!";
             copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>`;
             setTimeout(() => {
@@ -186,10 +174,7 @@
       
       const handlePredict = async () => {
         const contractAddress = contractInput.value.trim();
-        if (!contractAddress) {
-          alert("Please enter a contract address.");
-          return;
-        }
+        if (!contractAddress) { alert("Please enter a contract address."); return; }
         setLoadingState(true);
 
         try {
@@ -212,6 +197,5 @@
       predictButton.addEventListener('click', handlePredict);
     });
   </script>
-
 </body>
 </html>
