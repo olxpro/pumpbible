@@ -49,28 +49,35 @@
     .oracle-response-content ul { list-style-position: inside; list-style-type: disc; margin-bottom: 0.75em; }
     .oracle-response-content li { margin-left: 0.5em; }
 
-    /* --- NEW: Prophetic Scan Line Animation --- */
+    /* --- FIX: Corrected Scan Line Animation --- */
     .scan-wrapper {
       position: relative;
-      overflow: hidden; /* Crucial to hide the line outside the image bounds */
-      line-height: 0; /* Fixes potential extra space below the image */
+      overflow: hidden;
+      line-height: 0;
     }
     .scan-wrapper::after {
       content: '';
       position: absolute;
-      top: 0;
       left: 0;
       width: 100%;
       height: 3px;
       background: linear-gradient(90deg, transparent, rgba(175, 255, 255, 0.8), transparent);
-      animation: scan-effect 7s ease-in-out infinite;
       box-shadow: 0 0 10px 2px rgba(175, 255, 255, 0.5);
       border-radius: 3px;
+      /* Set initial state and animation */
+      top: -10%;
+      animation: scan-effect 7s ease-in-out infinite;
     }
     @keyframes scan-effect {
-      0% { transform: translateY(-200%); }
-      20% { transform: translateY(200%); } /* Sweep down in the first 20% of the animation time */
-      100% { transform: translateY(200%); } /* Wait at the bottom for the rest of the time */
+      0% {
+        top: -10%; /* Start just above the container */
+      }
+      20% {
+        top: 110%; /* Move to just below the container */
+      }
+      100% {
+        top: 110%; /* Stay below for the rest of the duration */
+      }
     }
   </style>
 
@@ -105,7 +112,6 @@
     <div class="absolute inset-0 opacity-30 animate-pulse" style="background-image: radial-gradient(circle at center, transparent 2px, transparent 3px); background-size: 50px 50px;"></div>
 
     <div class="relative z-10 flex flex-col items-center w-full">
-      <!-- NEW: Wrapper div for the scan line effect -->
       <div class="scan-wrapper mb-6 md:mb-8">
         <img 
           id="mysticIcon" 
@@ -148,7 +154,7 @@
       const formContainer = document.getElementById('formContainer');
       const footer = document.getElementById('footer');
 
-      mysticIcon.parentElement.classList.add('fade-in-element'); // Animate the wrapper
+      mysticIcon.parentElement.classList.add('fade-in-element');
       setTimeout(() => formContainer.classList.add('fade-in-element'), 200);
       setTimeout(() => footer.classList.add('fade-in-element'), 400);
 
