@@ -1,38 +1,44 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mystic Crypto Predictor</title>
+  
+  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS and Tailwind Configuration -->
   <style>
+    /* Base font fallback */
     body {
-      font-family: 'Arial', sans-serif; /* Default fallback font */
+      font-family: 'Arial', sans-serif;
     }
-    .font-cinzel {
-      font-family: 'Cinzel', serif;
-    }
-    .font-share-tech-mono {
-      font-family: 'Share Tech Mono', monospace;
-    }
-    /* Custom animation for gentle bobbing if needed, but will try to avoid with hover effects */
+    
+    /* Custom keyframe animations */
     @keyframes gentle-bob {
       0%, 100% { transform: translateY(-0.5%); }
       50% { transform: translateY(0.5%); }
     }
-    .animate-gentle-bob {
-      animation: gentle-bob 7s ease-in-out infinite;
+    
+    @keyframes fadeIn { 
+      0% { opacity: 0; transform: translateY(10px); } 
+      100% { opacity: 1; transform: translateY(0); } 
     }
-
-    /* Custom animation for a subtle shimmer on the button */
-    /* This creates a pseudo-element style shimmer, which is hard to apply with just Tailwind classes without direct CSS */
-    /* Instead, I will use Tailwind's animate-pulse on shadows or gradients. */
+    
+    /* Class to apply the animation */
+    .animate-fadeIn {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
   </style>
+
   <script>
+    // Tailwind Custom Configuration
     tailwind.config = {
       theme: {
         extend: {
@@ -47,6 +53,7 @@
             'glow-gold-hover': '0 0 20px 8px rgba(250, 204, 21, 0.6), 0 0 30px 15px rgba(250, 204, 21, 0.5)',
           },
           animation: {
+            'gentle-bob': 'gentle-bob 7s ease-in-out infinite',
             'subtle-pulse': 'subtle-pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'smoke-drift-1': 'smoke-drift 120s linear infinite alternate',
             'smoke-drift-2': 'smoke-drift 150s linear infinite alternate-reverse',
@@ -65,19 +72,155 @@
       }
     }
   </script>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.1.0/",
-    "react": "https://esm.sh/react@^19.1.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
+
 <body class="bg-neutral-950">
-  <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+
+  <!-- Main App Container -->
+  <div id="app-container" class="relative min-h-screen bg-neutral-950 text-gray-200 flex flex-col items-center justify-center overflow-hidden antialiased p-4">
+    
+    <!-- Smoky Background -->
+    <div class="absolute inset-0 opacity-20 animate-smoke-drift-1" style="background-image: radial-gradient(ellipse at 20% 80%, rgba(55, 65, 81, 0.5) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(75, 85, 99, 0.4) 0%, transparent 50%);"></div>
+    <div class="absolute inset-0 opacity-15 animate-smoke-drift-2" style="background-image: radial-gradient(ellipse at 50% 50%, rgba(107, 114, 128, 0.4) 0%, transparent 70%), radial-gradient(ellipse at 90% 10%, rgba(156, 163, 175, 0.3) 0%, transparent 60%), radial-gradient(ellipse at 10% 10%, rgba(120, 130, 145, 0.3) 0%, transparent 60%);"></div>
+    <div class="absolute inset-0 opacity-30 animate-pulse" style="background-image: radial-gradient(circle at center, transparent 2px, transparent 3px); background-size: 50px 50px;"></div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 animate-gentle-bob flex flex-col items-center">
+      <img 
+        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJteXN0aWNfaWNvbl9ncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDYsMTgyLDIxMik7c3RvcC1vcGFjaXR5OjEiIC8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMTY3LDI0MywyMDgpO3N0b3Atb3BhY2l0eTowLjgiIC8+PC9saW5lYXJHcmFkaWVudD48ZmlsdGVyIGlkPSJteXN0aWNfaWNvbl9nbG93Ij48ZmVHYXVzc2lhbkJsdXIgc3RhbmRhcmREZXZpYXRpb249IjMiIHJlc3VsdD0iY29sb3JlZEJsdXIiLz48ZmVOZXJnZT48ZmVNZXJnZU5vZGUgaW49ImNvbG9yZWRCbHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPjwvZmlsdGVyPjwvZGVmcz48cGF0aCBkPSJNNTAgMTIgQyAyNSAyNSwgMjAgNjAsIDUwIDg4IEMgODAgNjAsIDc1IDI1LCA1MCAxMiBaIE01MCAzMCBDIDM1IDQwLCAzNSA2MCwgNTAgNzAgQyA2NSA2MCwgNjUgNDAsIDUwIDMwIFoiIGZpbGw9InVybCgjbXlzdGljX2ljb25fZ3JhZDEpIiBmaWx0ZXI9InVybCgjbXlzdGljX2ljb25fZ2xvdykiIHN0cm9rZT0icmdiYSgyMDksMjUwLDIyOSwwLjUpIiBzdHJva2Utd2lkdGg9IjEiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI3IiBmaWxsPSJyZ2IoMjA5LDI1MCwyMjkpIi8+PHBhdGggZD0iTTUwIDIwIEMgMzAgMzUsIDMwIDY1LCA1MCA4MCBDIDcwIDY1LCA3MCAzNSwgNTAgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDYsMTgyLDIxMiwwLjcpIiBzdHJva2Utd2lkdGg9IjEuNSIvPjwvc3ZnPg=="
+        alt="Mystic Oracle Icon" 
+        class="mb-6 md:mb-8 h-24 w-24 md:h-28 md:w-28 opacity-90 [filter:drop-shadow(0_0_0.5rem_#22d3ee)]" 
+        aria-hidden="true"
+      />
+
+      <!-- Input Form -->
+      <div class="group p-8 md:p-12 bg-neutral-900/70 backdrop-blur-md rounded-xl shadow-2xl shadow-neutral-950/50 border border-neutral-700/50 transition-all duration-500 hover:shadow-neutral-800/60 w-full max-w-3xl">
+        <div class="flex flex-col items-center gap-6 md:gap-8 w-full">
+          <div class="flex flex-col sm:flex-row items-end gap-4 md:gap-6 w-full">
+            
+            <!-- Glowing Input -->
+            <div class="flex-grow w-full sm:w-auto">
+              <label for="contractAddress" class="block mb-2 text-md font-cinzel text-cyan-300 tracking-wider [filter:drop-shadow(0_0_0.3rem_#22d3ee)]">
+                Contract Address
+              </label>
+              <input 
+                id="contractAddress" 
+                type="text" 
+                placeholder="0x..."
+                class="w-full p-3 font-share-tech-mono bg-neutral-800/50 border-2 border-cyan-600/70 rounded-md text-cyan-200 placeholder-cyan-700/80 caret-cyan-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/80 focus:shadow-glow-cyan transition-all duration-300 ease-in-out"
+              />
+            </div>
+
+            <!-- Predict Button -->
+            <div class="flex-shrink-0 w-full sm:w-auto">
+              <button
+                id="predictButton"
+                class="relative group/button font-cinzel font-bold text-lg py-3 px-12 rounded-lg overflow-hidden transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 border-2 border-amber-500/50 focus:outline-none focus:ring-4 focus:ring-amber-400/50 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none w-full sm:w-auto bg-gradient-to-br from-amber-500 to-yellow-600 text-neutral-800 shadow-lg shadow-amber-500/40 hover:shadow-glow-gold-hover"
+                aria-label="Predict based on contract address"
+              >
+                <span id="buttonText" class="relative z-10">Predict</span>
+                <span id="buttonShimmer" class="absolute inset-0 block w-full h-full" aria-hidden="true">
+                  <span class="absolute inset-0 animate-subtle-pulse rounded-lg bg-gradient-to-br from-yellow-400/50 via-yellow-300/30 to-amber-500/50 opacity-75 group-hover/button:opacity-100 transition-opacity duration-300"></span>
+                  <span class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover/button:opacity-100 transition-opacity duration-500 transform -translate-x-full group-hover/button:translate-x-full group-hover/button:duration-1000"></span>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Result Container (initially hidden) -->
+          <div id="resultContainer" class="w-full"></div>
+
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="absolute bottom-4 left-1/2 -translate-x-1/2 text-neutral-600 text-xs font-share-tech-mono z-20">
+      Crypto Oracle v0.1 // System Online
+    </footer>
+  </div>
+
+  <!-- Vanilla JavaScript Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get DOM elements
+      const contractInput = document.getElementById('contractAddress');
+      const predictButton = document.getElementById('predictButton');
+      const buttonText = document.getElementById('buttonText');
+      const buttonShimmer = document.getElementById('buttonShimmer');
+      const resultContainer = document.getElementById('resultContainer');
+
+      // State variables
+      let isLoading = false;
+
+      const setLoadingState = (loading) => {
+        isLoading = loading;
+        predictButton.disabled = isLoading;
+
+        if (isLoading) {
+          buttonText.textContent = 'Consulting Oracle...';
+          predictButton.classList.add('bg-amber-700', 'text-amber-300', 'shadow-inner');
+          predictButton.classList.remove('bg-gradient-to-br', 'from-amber-500', 'to-yellow-600', 'text-neutral-800', 'shadow-lg', 'shadow-amber-500/40', 'hover:shadow-glow-gold-hover');
+          buttonShimmer.style.display = 'none';
+
+          // Show loading message
+          resultContainer.innerHTML = `
+            <div class="mt-6 p-4 text-cyan-200 font-share-tech-mono text-sm w-full text-center">
+              <div class="animate-pulse">Consulting the digital ether...</div>
+            </div>`;
+        } else {
+          buttonText.textContent = 'Predict';
+          predictButton.classList.remove('bg-amber-700', 'text-amber-300', 'shadow-inner');
+          predictButton.classList.add('bg-gradient-to-br', 'from-amber-500', 'to-yellow-600', 'text-neutral-800', 'shadow-lg', 'shadow-amber-500/40', 'hover:shadow-glow-gold-hover');
+          buttonShimmer.style.display = 'block';
+        }
+      };
+
+      const displayPrediction = (predictionText) => {
+        resultContainer.innerHTML = `
+          <div
+            class="mt-6 p-4 border border-cyan-700/50 rounded-md bg-cyan-900/20 text-cyan-200 font-share-tech-mono text-sm w-full text-left animate-fadeIn"
+            role="alert"
+            aria-live="assertive"
+          >
+            <h3 class="font-cinzel text-cyan-400 [filter:drop-shadow(0_0_0.2rem_#22d3ee)] mb-2 text-base">Oracle's Vision:</h3>
+            <p class="whitespace-pre-wrap">${predictionText}</p>
+          </div>
+        `;
+      };
+      
+      const handlePredict = async () => {
+        const contractAddress = contractInput.value.trim();
+        if (!contractAddress) {
+          alert("Please enter a contract address.");
+          return;
+        }
+
+        setLoadingState(true);
+        resultContainer.innerHTML = ''; // Clear previous results immediately
+
+        try {
+          // Simulate API call delay
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          // Placeholder for the prediction logic
+          const prediction = `Oracle's whisper for ${contractAddress}: The celestial alignments hint at shifting fortunes. Scrutinize the digital entrails closely.`;
+          
+          displayPrediction(prediction);
+
+        } catch (error) {
+          console.error("Error during prediction:", error);
+          const errorMessage = "The connection to the ethereal plane was disrupted. Please try again.";
+          displayPrediction(errorMessage);
+        } finally {
+          setLoadingState(false);
+        }
+      };
+
+      // Attach event listener
+      predictButton.addEventListener('click', handlePredict);
+    });
+  </script>
+
 </body>
 </html>
